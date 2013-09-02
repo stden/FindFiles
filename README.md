@@ -8,6 +8,7 @@ FindFiles
 * Сохранять результаты поиска в БД (например MySQL или PostgreSQL)
 * Дополнительно: реализовать UI использованием Swing или Web Application Server (servlet container) – смотря что более знакомо.
 
+```
 git archive --format zip --output FindFiles.zip master 
-
+```
 
