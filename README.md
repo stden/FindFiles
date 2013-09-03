@@ -12,3 +12,4 @@ FindFiles
 git archive --format zip --output FindFiles.zip master 
 ```
 
+Создание БД на localhost - mysql.sql

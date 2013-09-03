@@ -69,6 +69,7 @@ public class MainForm {
                                         @Override
                                         public void keywordFound(File file, int line) {
                                             listModel.addElement(String.format("%s: %d", file.getAbsolutePath(), line));
+                                            MySQLHelper.saveToDB(keywordTextField.getText(), file.getAbsolutePath(), line);
                                         }
                                     });
                                 } catch (FileNotFoundException ex) {
