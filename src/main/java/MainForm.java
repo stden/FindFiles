@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -17,6 +18,9 @@ public class MainForm {
     private JPanel mainPanel;
     private JTextField folderNameTextField;
     private JButton browseButton;
+    private JTextField MySQLConnectionString;
+    private JTextField MySQLLoginTextField;
+    private JPasswordField MySQLPassword;
 
     public MainForm() {
         // При нажатии на кнопку "Обзор..." позволим пользователю выбрать каталог
@@ -69,10 +73,21 @@ public class MainForm {
                                         @Override
                                         public void keywordFound(File file, int line) {
                                             listModel.addElement(String.format("%s: %d", file.getAbsolutePath(), line));
-                                            MySQLHelper.saveToDB(keywordTextField.getText(), file.getAbsolutePath(), line);
+                                            MySQLHelper mysql = null;
+                                            try {
+                                                mysql = new MySQLHelper(MySQLConnectionString.getText(),
+                                                        MySQLLoginTextField.getText(),
+                                                        MySQLPassword.getPassword());
+                                                mysql.saveToDB(keywordTextField.getText(), file.getAbsolutePath(), line);
+                                                mysql.close();
+                                            } catch (SQLException sqlException) {
+                                                //showMessageDialog(null, sqlException.getMessage(), "Ошибка MySQL", ERROR_MESSAGE);
+                                                sqlException.printStackTrace();
+                                            }
                                         }
                                     });
                                 } catch (FileNotFoundException ex) {
+                                    showMessageDialog(null, ex.getMessage(), "Файл не найден", ERROR_MESSAGE);
                                     ex.printStackTrace();
                                 }
                                 mainPanel.repaint();

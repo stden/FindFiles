@@ -9,35 +9,30 @@ import java.sql.SQLException;
  */
 public class MySQLHelper {
     private static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "";
-    private static final String CONNECTION_STRING = "jdbc:mysql://localhost/FindFiles";
+    private final Connection connection;
 
-    public static Connection connectToDB() throws ClassNotFoundException, SQLException, IOException {
+    public MySQLHelper(String connectionString, String userName, char[] password) throws SQLException {
         try {
             Class.forName(MYSQL_DRIVER);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Cannot find the driver in the classpath!", e);
         }
-        return DriverManager.getConnection(CONNECTION_STRING, USERNAME, PASSWORD);
+        connection = DriverManager.getConnection(connectionString, userName, String.valueOf(password));
     }
 
-    public static void saveToDB(String keyword, String path, int line) {
+    public void saveToDB(String keyword, String path, int line) {
         try {
-            Connection connection = connectToDB();
             PreparedStatement statement = connection.prepareStatement("INSERT INTO FindResult(keyword, path, line) VALUES (?, ?, ?)");
             statement.setString(1, keyword);
             statement.setString(2, path);
             statement.setInt(3, line);
             statement.executeUpdate();
-
-            connection.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+    }
+
+    public void close() throws SQLException {
+        connection.close();
     }
 }
