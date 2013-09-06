@@ -1,8 +1,15 @@
+
 import java.io.File;
 
 /**
- * Файл найден
+ * Обработчик события "Файл найден"
  */
 public interface FileFoundListener {
+
+    /**
+     * Найден файл
+     *
+     * @param file файл
+     */
     void fileFound(File file);
 }

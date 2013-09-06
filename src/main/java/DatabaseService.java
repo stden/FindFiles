@@ -1,3 +1,4 @@
+
 import models.FindResult;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -10,6 +11,7 @@ import javax.transaction.Transactional;
  */
 @ContextConfiguration(locations = "classpath:context.xml")
 public class DatabaseService {
+
     @PersistenceContext
     EntityManager em;
 
@@ -19,5 +21,4 @@ public class DatabaseService {
 
         em.persist(findResult);
     }
-
 }
