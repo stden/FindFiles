@@ -61,7 +61,7 @@ public class MainForm {
                 // Выводить на экран список файлов (полный путь к файлу) с указанием номера строки, в которой найдено ключевое слово
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        FileWalker walker = new FileWalker(new FileFoundListener() {
+                        Filewalker walker = new Filewalker(new FileFoundListener() {
                             @Override
                             public void fileFound(File file) {
                                 try {
