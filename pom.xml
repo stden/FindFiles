@@ -49,6 +49,7 @@
                 </configuration>
             </plugin>
 
+            <!-- Формы из IntelliJ IDEA  -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>ideauidesigner-maven-plugin</artifactId>

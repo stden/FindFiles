@@ -9,6 +9,12 @@ import java.util.Scanner;
  */
 public class FileScanner {
 
+    /**
+     * @param file Файл, в котором искать
+     * @param keyword Ключевое слово (что искать)
+     * @param keywordFoundListener Обработчик, когда ключевое слово найдено
+     * @throws FileNotFoundException Ошибка: файл не найден
+     */
     public FileScanner(File file, String keyword, KeywordFoundListener keywordFoundListener) throws FileNotFoundException {
         Scanner scanner = new Scanner(new FileReader(file));
         int line = 0;
