@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,9 +9,16 @@ import java.sql.SQLException;
  * Работа с БД MySQL
  */
 public class MySQLHelper {
+
     private static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
     private final Connection connection;
 
+    /**
+     * @param connectionString Строка соединения с БД
+     * @param userName Имя пользователя MySQL
+     * @param password Пароль пользователя MySQL
+     * @throws SQLException
+     */
     public MySQLHelper(String connectionString, String userName, char[] password) throws SQLException {
         try {
             Class.forName(MYSQL_DRIVER);
