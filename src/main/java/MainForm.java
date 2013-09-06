@@ -8,7 +8,7 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
- * РџСЂРѕРіСЂР°РјРјР° РїРѕРёСЃРєР° РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° РІРЅСѓС‚СЂРё С„Р°Р№Р»Р° РІ СѓРєР°Р·Р°РЅРЅРѕР№ РїР°РїРєРµ
+ * Программа поиска ключевого слова внутри файла в указанной папке
  */
 public class MainForm {
     private JTextField keywordTextField;
@@ -19,46 +19,46 @@ public class MainForm {
     private JButton browseButton;
 
     public MainForm() {
-        // РџСЂРё РЅР°Р¶Р°С‚РёРё РЅР° РєРЅРѕРїРєСѓ "РћР±Р·РѕСЂ..." РїРѕР·РІРѕР»РёРј РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ РІС‹Р±СЂР°С‚СЊ РєР°С‚Р°Р»РѕРі
+        // При нажатии на кнопку "Обзор..." позволим пользователю выбрать каталог
         browseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Р”РёР°Р»РѕРі РІС‹Р±РѕСЂР° РєР°С‚Р°Р»РѕРіР°
+                // Диалог выбора каталога
                 JFileChooser folderNameChooser = new JFileChooser();
                 jFileChooserRussian();
                 folderNameChooser.updateUI();
-                // РњРѕР¶РЅРѕ РІС‹Р±РёСЂР°С‚СЊ С‚РѕР»СЊРєРѕ РєР°С‚Р°Р»РѕРі
+                // Можно выбирать только каталог
                 folderNameChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                int ret = folderNameChooser.showDialog(null, "Р’С‹Р±РµСЂРёС‚Рµ РєР°С‚Р°Р»РѕРі");
+                int ret = folderNameChooser.showDialog(null, "Выберите каталог");
                 if (ret == JFileChooser.APPROVE_OPTION) {
                     File file = folderNameChooser.getSelectedFile();
                     folderNameTextField.setText(file.getAbsolutePath());
                 }
             }
         });
-        // РџСЂРё РЅР°Р¶Р°С‚РёРё РЅР° РєРЅРѕРїРєСѓ "Р�СЃРєР°С‚СЊ!"
+        // При нажатии на кнопку "Искать!"
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (folderNameTextField.getText().isEmpty()) {
-                    showMessageDialog(null, "Р’С‹Р±РµСЂРёС‚Рµ РїР°РїРєСѓ РґР»СЏ РїРѕРёСЃРєР° С„Р°Р№Р»РѕРІ!", "РќРµР·Р°РїРѕР»РЅРµРЅС‹ РґР°РЅРЅС‹Рµ", ERROR_MESSAGE);
+                    showMessageDialog(null, "Выберите папку для поиска файлов!", "Незаполнены данные", ERROR_MESSAGE);
                     folderNameTextField.requestFocus();
                     return;
                 }
                 if (keywordTextField.getText().isEmpty()) {
-                    showMessageDialog(null, "Р’РІРµРґРёС‚Рµ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ!", "РќРµР·Р°РїРѕР»РЅРµРЅС‹ РґР°РЅРЅС‹Рµ", ERROR_MESSAGE);
+                    showMessageDialog(null, "Введите ключевое слово!", "Незаполнены данные", ERROR_MESSAGE);
                     keywordTextField.requestFocus();
                     return;
                 }
                 final File dir = new File(folderNameTextField.getText());
                 if (!dir.isDirectory()) {
-                    showMessageDialog(null, "Р’С‹Р±РµСЂРёС‚Рµ РїР°РїРєСѓ РґР»СЏ РїРѕРёСЃРєР° С„Р°Р№Р»РѕРІ!", "РќРµР·Р°РїРѕР»РЅРµРЅС‹ РґР°РЅРЅС‹Рµ", ERROR_MESSAGE);
+                    showMessageDialog(null, "Выберите папку для поиска файлов!", "Незаполнены данные", ERROR_MESSAGE);
                     folderNameTextField.requestFocus();
                     return;
                 }
-                final DefaultListModel<String> listModel = new DefaultListModel<String>();
+                final DefaultListModel listModel = new DefaultListModel();
                 resultList.setModel(listModel);
-                // Р’С‹РІРѕРґРёС‚СЊ РЅР° СЌРєСЂР°РЅ СЃРїРёСЃРѕРє С„Р°Р№Р»РѕРІ (РїРѕР»РЅС‹Р№ РїСѓС‚СЊ Рє С„Р°Р№Р»Сѓ) СЃ СѓРєР°Р·Р°РЅРёРµРј РЅРѕРјРµСЂР° СЃС‚СЂРѕРєРё, РІ РєРѕС‚РѕСЂРѕР№ РЅР°Р№РґРµРЅРѕ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ
+                // Выводить на экран список файлов (полный путь к файлу) с указанием номера строки, в которой найдено ключевое слово
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         FileWalker walker = new FileWalker(new FileFoundListener() {
@@ -80,7 +80,7 @@ public class MainForm {
                         });
                         walker.walk(dir);
                         if (listModel.isEmpty()) {
-                            listModel.addElement(String.format("Р’ РїР°РїРєРµ \"%s\" С„Р°Р№Р»РѕРІ СЃ РєР»СЋС‡РµРІС‹Рј СЃР»РѕРІРѕРј \"%s\" РЅРµ РЅР°Р№РґРµРЅРѕ!",
+                            listModel.addElement(String.format("В папке \"%s\" файлов с ключевым словом \"%s\" не найдено!",
                                     folderNameTextField.getText(), keywordTextField.getText()));
                         }
                     }
@@ -90,40 +90,13 @@ public class MainForm {
         });
     }
 
-    private void jFileChooserRussian() {
-        UIManager.put("FileChooser.openButtonText", "РћС‚РєСЂС‹С‚СЊ");
-        UIManager.put("FileChooser.cancelButtonText", "РћС‚РјРµРЅР°");
-        UIManager.put("FileChooser.lookInLabelText", "РЎРјРѕС‚СЂРµС‚СЊ РІ");
-        UIManager.put("FileChooser.fileNameLabelText", "Р�РјСЏ С„Р°Р№Р»Р°");
-        UIManager.put("FileChooser.filesOfTypeLabelText", "РўРёРї С„Р°Р№Р»Р°");
-
-        UIManager.put("FileChooser.saveButtonText", "РЎРѕС…СЂР°РЅРёС‚СЊ");
-        UIManager.put("FileChooser.saveButtonToolTipText", "РЎРѕС…СЂР°РЅРёС‚СЊ");
-        UIManager.put("FileChooser.openButtonText", "РћС‚РєСЂС‹С‚СЊ");
-        UIManager.put("FileChooser.openButtonToolTipText", "РћС‚РєСЂС‹С‚СЊ");
-        UIManager.put("FileChooser.cancelButtonText", "РћС‚РјРµРЅР°");
-        UIManager.put("FileChooser.cancelButtonToolTipText", "РћС‚РјРµРЅР°");
-
-        UIManager.put("FileChooser.lookInLabelText", "РџР°РїРєР°");
-        UIManager.put("FileChooser.saveInLabelText", "РџР°РїРєР°");
-        UIManager.put("FileChooser.fileNameLabelText", "Р�РјСЏ С„Р°Р№Р»Р°");
-        UIManager.put("FileChooser.filesOfTypeLabelText", "РўРёРї С„Р°Р№Р»РѕРІ");
-
-        UIManager.put("FileChooser.upFolderToolTipText", "РќР° РѕРґРёРЅ СѓСЂРѕРІРµРЅСЊ РІРІРµСЂС…");
-        UIManager.put("FileChooser.newFolderToolTipText", "РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ РїР°РїРєРё");
-        UIManager.put("FileChooser.listViewButtonToolTipText", "РЎРїРёСЃРѕРє");
-        UIManager.put("FileChooser.detailsViewButtonToolTipText", "РўР°Р±Р»РёС†Р°");
-        UIManager.put("FileChooser.fileNameHeaderText", "Р�РјСЏ");
-        UIManager.put("FileChooser.fileSizeHeaderText", "Р Р°Р·РјРµСЂ");
-        UIManager.put("FileChooser.fileTypeHeaderText", "РўРёРї");
-        UIManager.put("FileChooser.fileDateHeaderText", "Р�Р·РјРµРЅРµРЅ");
-        UIManager.put("FileChooser.fileAttrHeaderText", "РђС‚СЂРёР±СѓС‚С‹");
-
-        UIManager.put("FileChooser.acceptAllFileFilterText", "Р’СЃРµ С„Р°Р№Р»С‹");
-    }
-
+    /**
+     * Точка входа в приложение
+     *
+     * @param args Параметры командной строки
+     */
     public static void main(String[] args) {
-        JFrame frame = new JFrame("РџРѕРёСЃРє РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° РІРЅСѓС‚СЂРё С„Р°Р№Р»Р° РІ СѓРєР°Р·Р°РЅРЅРѕР№ РїР°РїРєРµ");
+        JFrame frame = new JFrame("Поиск ключевого слова внутри файла в указанной папке");
         MainForm mainForm = new MainForm();
         paramsFromCommandLine(args, mainForm);
         frame.setContentPane(mainForm.mainPanel);
@@ -139,5 +112,37 @@ public class MainForm {
         if (args.length >= 2) {
             mainForm.keywordTextField.setText(args[1]);
         }
+    }
+
+    private void jFileChooserRussian() {
+        UIManager.put("FileChooser.openButtonText", "Открыть");
+        UIManager.put("FileChooser.cancelButtonText", "Отмена");
+        UIManager.put("FileChooser.lookInLabelText", "Смотреть в");
+        UIManager.put("FileChooser.fileNameLabelText", "Имя файла");
+        UIManager.put("FileChooser.filesOfTypeLabelText", "Тип файла");
+
+        UIManager.put("FileChooser.saveButtonText", "Сохранить");
+        UIManager.put("FileChooser.saveButtonToolTipText", "Сохранить");
+        UIManager.put("FileChooser.openButtonText", "Открыть");
+        UIManager.put("FileChooser.openButtonToolTipText", "Открыть");
+        UIManager.put("FileChooser.cancelButtonText", "Отмена");
+        UIManager.put("FileChooser.cancelButtonToolTipText", "Отмена");
+
+        UIManager.put("FileChooser.lookInLabelText", "Папка");
+        UIManager.put("FileChooser.saveInLabelText", "Папка");
+        UIManager.put("FileChooser.fileNameLabelText", "Имя файла");
+        UIManager.put("FileChooser.filesOfTypeLabelText", "Тип файлов");
+
+        UIManager.put("FileChooser.upFolderToolTipText", "На один уровень вверх");
+        UIManager.put("FileChooser.newFolderToolTipText", "Создание новой папки");
+        UIManager.put("FileChooser.listViewButtonToolTipText", "Список");
+        UIManager.put("FileChooser.detailsViewButtonToolTipText", "Таблица");
+        UIManager.put("FileChooser.fileNameHeaderText", "Имя");
+        UIManager.put("FileChooser.fileSizeHeaderText", "Размер");
+        UIManager.put("FileChooser.fileTypeHeaderText", "Тип");
+        UIManager.put("FileChooser.fileDateHeaderText", "Изменен");
+        UIManager.put("FileChooser.fileAttrHeaderText", "Атрибуты");
+
+        UIManager.put("FileChooser.acceptAllFileFilterText", "Все файлы");
     }
 }
