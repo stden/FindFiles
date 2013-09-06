@@ -4,10 +4,10 @@ import java.io.FilenameFilter;
 /**
  * Рекурсивный обход каталогов
  */
-public class FileWalker {
+public class DirWalker {
     private final FileFoundListener fileFoundListener;
 
-    public FileWalker(FileFoundListener fileFoundListener) {
+    public DirWalker(FileFoundListener fileFoundListener) {
         this.fileFoundListener = fileFoundListener;
     }
 
