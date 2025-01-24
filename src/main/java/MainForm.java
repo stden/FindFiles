@@ -14,7 +14,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class MainForm {
     private JTextField keywordTextField;
     private JButton searchButton;
-    private JList resultList;
+    private JList<String> resultList;
     private JPanel mainPanel;
     private JTextField folderNameTextField;
     private JButton browseButton;
@@ -60,7 +60,7 @@ public class MainForm {
                     folderNameTextField.requestFocus();
                     return;
                 }
-                final DefaultListModel listModel = new DefaultListModel();
+                final DefaultListModel<String> listModel = new DefaultListModel<>();
                 resultList.setModel(listModel);
                 // Выводить на экран список файлов (полный путь к файлу) с указанием номера строки, в которой найдено ключевое слово
                 SwingUtilities.invokeLater(new Runnable() {
