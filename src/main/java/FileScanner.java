@@ -8,19 +8,7 @@ import java.util.Scanner;
  * Поиск ключевого слова в файле
  */
 public class FileScanner {
-    /**
-     * Этот интерфейс обеспечивает метод для обработки событий нахождения ключевого слова.
-     */
-    public interface KeywordFoundListener {
-
-        /**
-         * Этот метод вызывается, когда ключевое слово найдено в файле.
-         * 
-         * @param file   Файл, в котором найдено ключевое слово
-         * @param line   Линия, на которой найдено ключевое слово
-         */
-        void keywordFound(File file, int line);
-    }
+    
 
     /**
      * @param file Файл, в котором искать
