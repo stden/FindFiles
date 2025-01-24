@@ -10,6 +10,9 @@ public class DirWalker {
     private final FileFoundListener fileFoundListener;
 
     public DirWalker(FileFoundListener fileFoundListener) {
+        if (fileFoundListener == null) {
+            throw new IllegalArgumentException("FileFoundListener cannot be null");
+        }
         this.fileFoundListener = fileFoundListener;
     }
 
